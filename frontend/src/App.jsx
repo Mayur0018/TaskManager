@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { NotificationProvider } from "./context/NotificationContext";
 
 import Login               from "./pages/Login";
@@ -13,43 +13,64 @@ import TeamChatPage        from "./pages/TeamChatPage";
 import TeamDocumentsPage   from "./pages/TeamDocumentsPage";
 import NotificationsPage   from "./pages/NotificationsPage";
 
-function ProtectedRoute({ children }) {
+function ProtectedLayout() {
   const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" replace />;
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <NotificationProvider>
+      <Outlet />
+    </NotificationProvider>
+  );
+}
+
+function PublicRoute({ children }) {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
 }
 
 function App() {
-  const token = localStorage.getItem("token");
-
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/login"    element={<Login />} />
-      <Route path="/register" element={<Register />} />
-
       <Route
-        path="/*"
+        path="/login"
         element={
-          token ? (
-            <NotificationProvider>
-              <Routes>
-                <Route path="/dashboard"       element={<Dashboard />} />
-                <Route path="/kanban"          element={<KanbanBoard />} />
-                <Route path="/teams"           element={<TeamsPage />} />
-                <Route path="/team-tasks"      element={<TeamTasksPage />} />
-                <Route path="/team-analytics"  element={<TeamDashboardPage />} />
-                <Route path="/team-calendar"   element={<TeamCalendarPage />} />
-                <Route path="/team-chat"       element={<TeamChatPage />} />
-                <Route path="/team-documents"  element={<TeamDocumentsPage />} />
-                <Route path="/notifications"   element={<NotificationsPage />} />
-                <Route path="*"                element={<Navigate to="/dashboard" replace />} />
-              </Routes>
-            </NotificationProvider>
-          ) : (
-            <Navigate to="/login" replace />
-          )
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
         }
       />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+
+      <Route element={<ProtectedLayout />}>
+        <Route path="/dashboard"      element={<Dashboard />} />
+        <Route path="/kanban"         element={<KanbanBoard />} />
+        <Route path="/teams"          element={<TeamsPage />} />
+        <Route path="/team-tasks"     element={<TeamTasksPage />} />
+        <Route path="/team-analytics" element={<TeamDashboardPage />} />
+        <Route path="/team-calendar"  element={<TeamCalendarPage />} />
+        <Route path="/team-chat"      element={<TeamChatPage />} />
+        <Route path="/team-documents" element={<TeamDocumentsPage />} />
+        <Route path="/notifications"  element={<NotificationsPage />} />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

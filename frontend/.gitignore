@@ -27,3 +27,20 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+
+@"
+node_modules/
+**/node_modules/
+.env
+.env.*
+!.env.example
+dist/
+build/
+.next/
+*.log
+repomix-output.xml
+"@ | Set-Content -Path ".gitignore"
+**/.env
+**/.env.*
+!**/.env.example

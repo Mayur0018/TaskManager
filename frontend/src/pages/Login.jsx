@@ -36,7 +36,7 @@ function Login() {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user", JSON.stringify(response.data.user));
 
-            navigate("/dashboard");
+            navigate("/dashboard", { replace: true });
         } catch (error) {
             console.error("Login error:", error);
             if (error.response?.data?.message) {

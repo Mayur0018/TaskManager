@@ -38,7 +38,7 @@ function Register() {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("user", JSON.stringify(response.data.user));
 
-            navigate("/dashboard");
+            navigate("/dashboard", { replace: true });
         } catch (error) {
             console.error("Registration error:", error);
             if (error.response?.data?.message) {
