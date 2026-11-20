@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
+import rateLimit from "express-rate-limit";
+import User from "./models/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -48,12 +50,14 @@ const io = new Server(httpServer, {
 setIO(io);
 
 // Authenticate Socket.IO connections with JWT
-io.use((socket, next) => {
+io.use(async (socket, next) => {
     const token = socket.handshake.auth?.token;
     if (!token) return next(new Error("Authentication error"));
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select("-password");
+        if (!user) return next(new Error("User not found"));
         socket.userId = decoded.id;
         next();
     } catch {
@@ -93,7 +97,7 @@ app.use(cors({
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(null, true); // Permissive in dev
+            callback(new Error("Not allowed by CORS"));
         }
     },
     credentials: true
@@ -104,12 +108,21 @@ app.use(express.json());
 // Serve uploaded files statically
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// ── Rate limiting ────────────────────────────────────────────────────────────
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 10,                  // limit each IP to 10 requests per windowMs
+    message: { message: "Too many requests from this IP, please try again later." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // ── Routes ───────────────────────────────────────────────────────────────────
 app.get("/", (req, res) => {
     res.send("MERN Task Manager API is running");
 });
 
-app.use("/api/auth",          authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/tasks",         taskRoutes);
 app.use("/api/teams",         teamRoutes);
 app.use("/api/notifications", notificationRoutes);

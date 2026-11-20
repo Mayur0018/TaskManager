@@ -28,19 +28,9 @@ dist-ssr
 .env.*
 !.env.example
 
-
-@"
-node_modules/
-**/node_modules/
-.env
-.env.*
-!.env.example
+# Build
 dist/
 build/
 .next/
 *.log
 repomix-output.xml
-"@ | Set-Content -Path ".gitignore"
-**/.env
-**/.env.*
-!**/.env.example

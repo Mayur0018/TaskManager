@@ -3,9 +3,12 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const generateToken = (id) => {
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined in environment variables");
+    }
     return jwt.sign(
         { id },
-        process.env.JWT_SECRET || "default_jwt_secret",
+        process.env.JWT_SECRET,
         { expiresIn: "7d" }
     );
 };
@@ -20,7 +23,22 @@ export const registerUser = async (req, res) => {
             });
         }
 
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const normalizedEmail = email.trim().toLowerCase();
+        if (!emailRegex.test(normalizedEmail)) {
+            return res.status(400).json({
+                message: "Please enter a valid email address"
+            });
+        }
+
+        // Validate password strength
+        if (password.length < 6) {
+            return res.status(400).json({
+                message: "Password must be at least 6 characters long"
+            });
+        }
+
         const existingUser = await User.findOne({ email: normalizedEmail });
 
         if (existingUser) {
@@ -61,7 +79,15 @@ export const loginUser = async (req, res) => {
             });
         }
 
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const normalizedEmail = email.trim().toLowerCase();
+        if (!emailRegex.test(normalizedEmail)) {
+            return res.status(400).json({
+                message: "Please enter a valid email address"
+            });
+        }
+
         const user = await User.findOne({ email: normalizedEmail });
 
         if (!user) {

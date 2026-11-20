@@ -15,12 +15,19 @@ import {
     FiList,
     FiClock,
     FiEye,
-    FiCheckCircle
+    FiCheckCircle,
+    FiTrendingUp,
+    FiTrendingDown,
+    FiActivity,
+    FiUser,
 } from "react-icons/fi";
 import api from "../api";
 import Layout from "../components/Layout";
 import TaskForm from "../components/TaskForm";
 import TaskDetailModal from "../components/TaskDetailModal";
+import Badge from "../components/ui/Badge";
+import Card from "../components/ui/Card";
+import Avatar from "../components/ui/Avatar";
 
 function Dashboard() {
     const [tasks, setTasks] = useState([]);
