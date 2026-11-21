@@ -51,6 +51,10 @@ const isOriginAllowed = (origin) => {
     if (allowedOrigins.includes(normalized) || allowedOrigins.includes("*")) {
         return true;
     }
+    // Automatically allow all Vercel domains (production & preview deployments)
+    if (/^https:\/\/([a-zA-Z0-9_-]+\.)?vercel\.app$/.test(normalized)) {
+        return true;
+    }
     // Allow localhost in development
     if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return true;
@@ -133,7 +137,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ── Rate limiting ────────────────────────────────────────────────────────────
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 20,                  // limit each IP to 20 auth requests per windowMs
+    max: 50,                  // limit each IP to 50 auth requests per windowMs
+    skip: (req) => req.method === "OPTIONS", // Never rate-limit CORS preflight requests
     message: { message: "Too many attempts, please try again later." },
     standardHeaders: true,
     legacyHeaders: false,
