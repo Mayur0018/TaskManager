@@ -5,7 +5,19 @@ import api from "../api";
 
 const NotificationContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+const getSocketURL = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (apiUrl) {
+        return apiUrl.replace(/\/api\/?$/, "");
+    }
+    // In production, connect to current host origin; in dev, default to localhost:5000
+    if (import.meta.env.PROD) {
+        return typeof window !== "undefined" ? window.location.origin : "";
+    }
+    return "http://localhost:5000";
+};
+
+const SOCKET_URL = getSocketURL();
 
 export function NotificationProvider({ children }) {
     const [notifications, setNotifications] = useState([]);

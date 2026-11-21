@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const getBaseURL = () => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    // In production without an explicit VITE_API_URL, use relative /api
+    // so it works on the same domain or behind reverse proxies
+    return import.meta.env.PROD ? "/api" : "http://localhost:5000/api";
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+    baseURL: getBaseURL()
 });
 
 api.interceptors.request.use((config) => {

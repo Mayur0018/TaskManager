@@ -46,7 +46,11 @@ function Register() {
             if (error.response?.data?.message) {
                 setError(error.response.data.message);
             } else if (error.code === "ERR_NETWORK") {
-                setError("Cannot connect to backend server. Please verify backend is running on port 5000.");
+                setError(
+                    import.meta.env.DEV
+                        ? "Cannot connect to backend server. Please verify backend is running on port 5000."
+                        : "Cannot connect to server. Please verify your backend server is running and CORS/API URL is configured correctly."
+                );
             } else {
                 setError("Registration failed. Please try again.");
             }

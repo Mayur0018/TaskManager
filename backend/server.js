@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import jwt from "jsonwebtoken";
 import rateLimit from "express-rate-limit";
@@ -30,18 +31,39 @@ import { startDeadlineCron }   from "./utils/deadlineCron.js";
 const app        = express();
 const httpServer = createServer(app);
 
+// Trust reverse proxies (Render, Vercel, Railway, Heroku, Nginx)
+app.set("trust proxy", 1);
+
+const rawClientUrls = process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",") : [];
+const configuredOrigins = rawClientUrls.map((u) => u.trim().replace(/\/$/, "")).filter(Boolean);
+
 const allowedOrigins = [
-    process.env.CLIENT_URL,
+    ...configuredOrigins,
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:5174",
     "http://127.0.0.1:5174"
-].filter(Boolean);
+];
+
+const isOriginAllowed = (origin) => {
+    if (!origin) return true; // allow curl, mobile apps, server-to-server
+    const normalized = origin.trim().replace(/\/$/, "");
+    if (allowedOrigins.includes(normalized) || allowedOrigins.includes("*")) {
+        return true;
+    }
+    // Allow localhost in development
+    if (/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+        return true;
+    }
+    return false;
+};
 
 // ── Socket.IO setup ──────────────────────────────────────────────────────────
 const io = new Server(httpServer, {
     cors: {
-        origin:      allowedOrigins,
+        origin: (origin, callback) => {
+            callback(null, isOriginAllowed(origin));
+        },
         methods:     ["GET", "POST"],
         credentials: true
     }
@@ -94,10 +116,10 @@ io.on("connection", (socket) => {
 // ── Express middleware ───────────────────────────────────────────────────────
 app.use(cors({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (isOriginAllowed(origin)) {
             callback(null, true);
         } else {
-            callback(new Error("Not allowed by CORS"));
+            callback(null, false);
         }
     },
     credentials: true
@@ -111,15 +133,15 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ── Rate limiting ────────────────────────────────────────────────────────────
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 10,                  // limit each IP to 10 requests per windowMs
-    message: { message: "Too many requests from this IP, please try again later." },
+    max: 20,                  // limit each IP to 20 auth requests per windowMs
+    message: { message: "Too many attempts, please try again later." },
     standardHeaders: true,
     legacyHeaders: false,
 });
 
 // ── Routes ───────────────────────────────────────────────────────────────────
-app.get("/", (req, res) => {
-    res.send("MERN Task Manager API is running");
+app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 app.use("/api/auth", authLimiter, authRoutes);
@@ -129,6 +151,23 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/analytics",     analyticsRoutes);
 app.use("/api/chat",          chatRoutes);
 app.use("/api/documents",     documentRoutes);
+
+// ── Serve Production Frontend (if built) ─────────────────────────────────────
+const frontendDist = path.join(__dirname, "../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+    app.use(express.static(frontendDist));
+    // SPA catch-all fallback middleware (Express 4 & 5 compatible, avoids path-to-regexp PathError)
+    app.use((req, res, next) => {
+        if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.startsWith("/uploads")) {
+            return res.sendFile(path.join(frontendDist, "index.html"));
+        }
+        next();
+    });
+} else {
+    app.get("/", (req, res) => {
+        res.send("MERN Task Manager API is running");
+    });
+}
 
 // ── Start Server ─────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
