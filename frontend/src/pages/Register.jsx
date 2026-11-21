@@ -60,27 +60,27 @@ function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-primary-50 to-slate-100 px-4 py-12 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
-            <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 border border-slate-200 dark:border-slate-800">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 px-4 py-12">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-[#E9DFF5]">
                 <div className="text-center mb-8">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center mx-auto mb-4 shadow-lg">
                         <FiUser className="w-6 h-6 text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Create Account</h1>
-                    <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Register to manage your tasks efficiently.</p>
+                    <h1 className="text-3xl font-bold tracking-tight text-[#241B35]">Create Account</h1>
+                    <p className="mt-2 text-sm text-[#81758F]">Register to manage your tasks efficiently.</p>
                 </div>
 
                 {error && (
-                    <div className="mb-6 rounded-xl bg-danger-50 border border-danger-100 p-4 text-sm text-danger-600 dark:bg-danger-500/10 dark:border-danger-500/20 dark:text-danger-400">
+                    <div className="mb-6 rounded-xl bg-danger-50 border border-danger-100 p-4 text-sm text-danger-600">
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+                        <label className="block text-sm font-medium text-[#241B35] mb-2">Full Name</label>
                         <div className="relative">
-                            <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-violet-400" />
                             <input
                                 name="name"
                                 type="text"
@@ -88,15 +88,15 @@ function Register() {
                                 value={form.name}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-3 pl-10 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200"
+                                className="w-full px-4 py-3 pl-10 rounded-lg border border-[#E9DFF5] bg-white text-[#241B35] focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition-all duration-200"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
+                        <label className="block text-sm font-medium text-[#241B35] mb-2">Email Address</label>
                         <div className="relative">
-                            <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-violet-400" />
                             <input
                                 name="email"
                                 type="email"
@@ -104,24 +104,24 @@ function Register() {
                                 value={form.email}
                                 onChange={handleChange}
                                 required
-                                className="w-full px-4 py-3 pl-10 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200"
+                                className="w-full px-4 py-3 pl-10 rounded-lg border border-[#E9DFF5] bg-white text-[#241B35] focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition-all duration-200"
                             />
                         </div>
                     </div>
 
                     <div>
                         <div className="flex items-center justify-between mb-2">
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+                            <label className="block text-sm font-medium text-[#241B35]">Password</label>
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+                                className="text-xs text-violet-600 hover:text-violet-700 transition-colors"
                             >
                                 {showPassword ? "Hide" : "Show"}
                             </button>
                         </div>
                         <div className="relative">
-                            <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-violet-400" />
                             <input
                                 name="password"
                                 type={showPassword ? "text" : "password"}
@@ -130,7 +130,7 @@ function Register() {
                                 onChange={handleChange}
                                 minLength={6}
                                 required
-                                className="w-full px-4 py-3 pl-10 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200"
+                                className="w-full px-4 py-3 pl-10 rounded-lg border border-[#E9DFF5] bg-white text-[#241B35] focus:ring-2 focus:ring-violet-500 focus:border-violet-500 outline-none transition-all duration-200"
                             />
                         </div>
                     </div>
@@ -138,7 +138,7 @@ function Register() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg shadow-sm transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+                        className="w-full py-3 px-4 bg-violet-600 hover:bg-violet-700 active:bg-violet-800 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg shadow-sm transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
                     >
                         {loading ? (
                             <>
@@ -157,9 +157,9 @@ function Register() {
                     </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+                <p className="mt-8 text-center text-sm text-[#81758F]">
                     Already have an account?{" "}
-                    <Link to="/login" className="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 hover:underline transition-colors">
+                    <Link to="/login" className="font-semibold text-violet-600 hover:text-violet-500 hover:underline transition-colors">
                         Sign in
                     </Link>
                 </p>

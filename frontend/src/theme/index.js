@@ -1,10 +1,15 @@
 export const COLORS = {
   primary: {
-    50: '#eff6ff',
-    100: '#dbeafe',
-    500: '#3b82f6',
-    600: '#2563eb',
-    700: '#1d4ed8',
+    50: '#F5F3FF',
+    100: '#EDE9FE',
+    200: '#DDD6FE',
+    300: '#C4B5FD',
+    400: '#A78BFA',
+    500: '#8B5CF6',
+    600: '#7C3AED',
+    700: '#6D28D9',
+    800: '#5B21B6',
+    900: '#4C1D95',
   },
   secondary: {
     50: '#f8fafc',
@@ -29,10 +34,21 @@ export const COLORS = {
     600: '#dc2626',
   },
   info: {
-    50: '#eff6ff',
-    500: '#3b82f6',
+    50: '#F5F3FF',
+    500: '#8B5CF6',
   },
-} as const;
+  royal: {
+    sidebarBg: '#211638',
+    brand: '#7C3AED',
+    secondaryPurple: '#A78BFA',
+    mainBg: '#FAF7FF',
+    card: '#FFFFFF',
+    accent: '#F0ABFC',
+    textPrimary: '#241B35',
+    textSecondary: '#81758F',
+    border: '#E9DFF5',
+  },
+};
 
 export const TYPOGRAPHY = {
   fontFamily: {
@@ -54,7 +70,7 @@ export const TYPOGRAPHY = {
     semibold: '600',
     bold: '700',
   },
-} as const;
+};
 
 export const RADIUS = {
   sm: '0.25rem',
@@ -63,20 +79,22 @@ export const RADIUS = {
   xl: '0.75rem',
   '2xl': '1rem',
   full: '9999px',
-} as const;
+};
 
 export const SHADOWS = {
   sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
   md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
   lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
   xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-} as const;
+  royalSm: '0 2px 8px 0 rgba(124, 58, 237, 0.06)',
+  royalMd: '0 4px 16px 0 rgba(124, 58, 237, 0.10)',
+};
 
 export const TRANSITION = {
   default: 'all 0.2s ease-in-out',
   fast: 'all 0.1s ease-in-out',
   smooth: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-} as const;
+};
 
 export const BREAKPOINTS = {
   sm: '640px',
@@ -84,4 +102,4 @@ export const BREAKPOINTS = {
   lg: '1024px',
   xl: '1280px',
   '2xl': '1536px',
-} as const;
+};

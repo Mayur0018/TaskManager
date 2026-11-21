@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  --color-primary-50: #F5F3FF;
+  --color-primary-100: #EDE9FE;
+  --color-primary-200: #DDD6FE;
+  --color-primary-300: #C4B5FD;
+  --color-primary-400: #A78BFA;
+  --color-primary-500: #8B5CF6;
+  --color-primary-600: #7C3AED;
+  --color-primary-700: #6D28D9;
+  --color-primary-800: #5B21B6;
+  --color-primary-900: #4C1D95;
 
   --color-secondary-50: #f8fafc;
   --color-secondary-100: #f1f5f9;
@@ -50,14 +50,14 @@
   --color-danger-600: #dc2626;
   --color-danger-700: #b91c1c;
 
-  --color-info-50: #eff6ff;
-  --color-info-100: #dbeafe;
-  --color-info-200: #bfdbfe;
-  --color-info-300: #93c5fd;
-  --color-info-400: #60a5fa;
-  --color-info-500: #3b82f6;
-  --color-info-600: #2563eb;
-  --color-info-700: #1d4ed8;
+  --color-info-50: #F5F3FF;
+  --color-info-100: #EDE9FE;
+  --color-info-200: #DDD6FE;
+  --color-info-300: #C4B5FD;
+  --color-info-400: #A78BFA;
+  --color-info-500: #8B5CF6;
+  --color-info-600: #7C3AED;
+  --color-info-700: #6D28D9;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
@@ -78,7 +78,9 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased min-h-screen;
+    @apply antialiased min-h-screen;
+    background-color: #FAF7FF;
+    color: #241B35;
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
@@ -92,7 +94,8 @@
   h4,
   h5,
   h6 {
-    @apply font-semibold tracking-tight text-slate-900;
+    @apply font-semibold tracking-tight;
+    color: #241B35;
   }
 
   .dark h1,
@@ -107,27 +110,43 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-slate-800/20;
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
   }
 
   .premium-card {
-    @apply bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all duration-200 hover:shadow-md;
+    @apply bg-white rounded-xl shadow-sm transition-all duration-200 hover:shadow-md;
+    border: 1px solid #E9DFF5;
   }
 
   .input-field {
-    @apply w-full px-4 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200;
+    @apply w-full px-4 py-2.5 rounded-lg bg-white text-slate-900 outline-none transition-all duration-200;
+    border: 1px solid #E9DFF5;
+    --tw-ring-color: #7C3AED;
+  }
+
+  .input-field:focus {
+    @apply ring-2;
+    border-color: #7C3AED;
+    ring-color: #7C3AED;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary-600 text-white font-medium shadow-sm hover:bg-primary-700 hover:shadow-md transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-white font-medium shadow-sm transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed;
+    background-color: #7C3AED;
+  }
+
+  .btn-primary:hover {
+    background-color: #6D28D9;
+    @apply shadow-md;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-white text-slate-700 font-medium shadow-sm hover:bg-slate-50 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed;
+    border: 1px solid #E9DFF5;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 active:scale-95;
+    @apply inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-slate-600 font-medium hover:bg-slate-100 transition-all duration-200 active:scale-95;
   }
 
   .badge,
@@ -140,22 +159,59 @@
   }
 
   .badge-primary {
-    @apply bg-primary-50 text-primary-600 border-primary-100 dark:bg-primary-500/10 dark:text-primary-400 dark:border-primary-500/20;
+    @apply bg-primary-50 text-primary-600 border-primary-100;
   }
 
   .badge-success {
-    @apply bg-success-50 text-success-600 border-success-100 dark:bg-success-500/10 dark:text-success-400 dark:border-success-500/20;
+    @apply bg-success-50 text-success-600 border-success-100;
   }
 
   .badge-warning {
-    @apply bg-warning-50 text-warning-600 border-warning-100 dark:bg-warning-500/10 dark:text-warning-400 dark:border-warning-500/20;
+    @apply bg-warning-50 text-warning-600 border-warning-100;
   }
 
   .badge-danger {
-    @apply bg-danger-50 text-danger-600 border-danger-100 dark:bg-danger-500/10 dark:text-danger-400 dark:border-danger-500/20;
+    @apply bg-danger-50 text-danger-600 border-danger-100;
   }
 
   .badge-info {
-    @apply bg-info-50 text-info-600 border-info-100 dark:bg-info-500/10 dark:text-info-400 dark:border-info-500/20;
+    @apply bg-info-50 text-info-600 border-info-100;
+  }
+
+  /* Royal Purple utility classes */
+  .sidebar-royal {
+    background-color: #211638;
+    color: #ffffff;
+  }
+
+  .royal-card {
+    @apply bg-white rounded-xl shadow-sm transition-all duration-200;
+    border: 1px solid #E9DFF5;
+    box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.06), 0 1px 2px 0 rgba(124, 58, 237, 0.04);
+  }
+
+  .royal-card:hover {
+    box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.10), 0 2px 4px 0 rgba(124, 58, 237, 0.06);
+  }
+
+  .royal-badge-purple {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium;
+    background-color: #EDE9FE;
+    color: #7C3AED;
+    border: 1px solid #DDD6FE;
+  }
+
+  .royal-gradient {
+    background: linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%);
+  }
+
+  .royal-input {
+    @apply w-full px-4 py-2.5 rounded-lg bg-white text-slate-900 outline-none transition-all duration-200;
+    border: 1px solid #E9DFF5;
+  }
+
+  .royal-input:focus {
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
   }
 }
